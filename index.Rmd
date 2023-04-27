@@ -5,12 +5,13 @@ date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: bookdown::bs4_book_dark
 bibliography: [book.bib, packages.bib]
+url: https://chldnjstjr.github.io/LOCALDATA/
 # url: your book url like https://bookdown.org/yihui/bookdown
 # cover-image: path to the social sharing image like images/cover.jpg
 description: |
   Wow! Fantastic Baby!.
 link-citations: yes
-github-repo: rstudio/bookdown-demo
+github-repo: chldnjstjr/LOCALDATA
 ---
 
 # Index
