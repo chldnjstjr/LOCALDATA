@@ -156,7 +156,7 @@ df1 %>%
       filter(영업상태구분코드=="04"&is.na(폐업연도)) #없음
     ```
 
-## 당장 필요한 것은?
+## 연도별 체력단련업 추이
 
 ### 연도별 헬스장 개수의 추이
 
@@ -212,11 +212,11 @@ for (i in 1:length(years)) {
   result_df[i, "휴업시작연도"] <- sum(df1$휴업시작연도 == year, na.rm = T)
   result_df[i, "인허가취소연도"] <- sum(df1$인허가취소연도 == year, na.rm = T)
 }
+
 # print the results
 print(result_df)
 
 result_df %>% 
   group_by(year) %>%
   summarise(인허가연도, "폐업/휴업/취소"=폐업연도+휴업시작연도+인허가취소연도)
-
 ```

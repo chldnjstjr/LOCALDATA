@@ -3,16 +3,13 @@
 ## 데이터
 
 -   담배소매업
+-   국내에서 영업 중인 담배제조사
 
-## Research
-
-국내에서 영업 중인 담배제조사
-
-### 준비
+## 목표
 
 담배 소매점의 트렌드와 전국 현황을 살펴본다
 
-#### 데이터 불러오기
+## 데이터 불러오기
 
 -   제공되는 엑셀 파일은 3개의 시트로 나뉘어 있음.
 -   각 시트를 호출하여 1개 데이터 프레임으로 합치는 작업 ▼
@@ -36,7 +33,7 @@ ciga_df <- do.call(rbind, sheet_data)
 rm(sheet_data)
 ```
 
-#### 전처리
+## 전처리
 
 ```{r}
 #Remove time from the date
@@ -279,9 +276,9 @@ ciga_df <- ciga_df %>%
          최종수정연도 = year(as.Date(최종수정시점, origin = "1970-01-01")))
 ```
 
-### 분석
+## 분석
 
-#### 연도별 담배소매점 수 추이
+### 연도별 담배소매점 수 추이
 
 ```{r, Trends in the number of tobacco retail stores by year}
 # Create a vector of years from 1990 to 2023
@@ -319,7 +316,7 @@ fig <- plot_ly(Opening_ciga_df, x = ~year, y = ~open_stores, type = 'scatter', m
 fig 
 ```
 
-#### 연도별 담배소매점 인허가 및 폐업/취소/휴업 수 추이
+### 연도별 담배소매점 인허가 및 폐업/취소/휴업 수 추이
 
 ```{r}
 # define the years from 1995 to 2023
@@ -363,7 +360,7 @@ plot_ly(data = result_ciga_df_2, x = ~year) %>%
   layout(title = "연도별 인허가 및 폐업/휴업/취소 추이", xaxis = list(title = "연도"), yaxis = list(title = "누적 수"), plot_bgcolor = "black", paper_bgcolor = "black", font = list(color = "white"))
 ```
 
-#### 지역별 담배소매점 수
+### 지역별 담배소매점 수
 
 ```{r}
 ciga_df %>%
@@ -428,7 +425,7 @@ left_join(ciga_region_df, df_map_select,by = "region") %>%
 ggplotly(p)
 ```
 
-#### 시군구별 담배소매점 수
+### 시군구별 담배소매점 수
 
 ```{r}
 ciga_df %>%
@@ -454,7 +451,7 @@ ciga_df %>%
   arrange(desc(개수))
 ```
 
-#### 폐업장 평균 영업 기간
+### 폐업장 평균 영업 기간
 
 -   폐업장 평균 영업 기간
     -   폐업/취소/휴업 등 비영업인 경우 케이스의 평균
@@ -466,8 +463,4 @@ ciga_df %>%
   mutate(평균업지속기간_연도 = as.numeric(difftime(as.Date(폐업일자, origin = "1970-01-01"), as.Date(인허가일자), units = "days"))/365) %>%
   group_by(폐업연도) %>%
   summarise(평균업기간 = mean(평균업지속기간_연도, na.rm = TRUE))
-```
-
-```{r}
-
 ```

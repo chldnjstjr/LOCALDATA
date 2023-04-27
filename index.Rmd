@@ -1,5 +1,5 @@
 ---
-title: "BRIG"
+title: "공공데이터 전처리 가이드"
 author: "WON SEOK CHOI"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -16,6 +16,7 @@ github-repo: chldnjstjr/LOCALDATA
 
 # Index
 
+![](images/%EC%8D%B8%EB%84%A4%EC%9D%BC-001.png){width="793"}
 
 ```{r eval=FALSE}
 bookdown::serve_book()
