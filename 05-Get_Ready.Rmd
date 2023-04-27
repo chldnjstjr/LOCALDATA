@@ -1,0 +1,222 @@
+# 분석
+
+## 준비
+
+### 데이터
+
+1.  체력단련업
+
+-   [홈페이지](https://www.localdata.go.kr/devcenter/dataDown.do?menuNo=20001)에서 직접 다운로드
+
+-   지방인허가데이터의OPEN API는 '변동분 자료'만 호출이 가능하며, 전체 자료는 직접 다운로드해야함([안내](https://www.localdata.go.kr/devcenter/apiGuide.do?menuNo=20002)).
+
+### 라이브러리
+
+```{r}
+library(pacman)
+p_load(readxl, dplyr, lubridate, ggplot2, sf, maps, stringr, plotly)
+```
+
+-   **readxl**: read_xlsx 함수 사용을 위한 패키지
+
+-   **dplyr**: %\>%, select, summarise 함수 사용을 위한 패키지
+
+-   **lubridate**: year 함수 사용을 위한 패키지
+
+-   **ggplot2**: ggplot 함수 사용을 위한 패키지
+
+-   **sf**: st_as_sf, st_transform 함수 사용을 위한 패키지
+
+-   **maps**:
+
+-   plotly: plot_ly 함수 사용을 위한 패키지
+
+### 데이터 불러오기
+
+```{r, include=F}
+df <- read_excel("C:/Users/wschoi/Desktop/TOY/[ITOCHU] 프로틴 파우더 시장 이해를 위한 소비자조사/지방인허가데이터/체력단련업_230409.xlsx")
+str(df)
+names(df)
+```
+
+### 전처리
+
+```{r}
+#날짜 뒤 시간 제거 
+df$최종수정시점 <- as.Date(df$최종수정시점, format = "%Y-%m-%d")
+
+#날짜 형태로 변환 - 연도 파생 변수 추출 목적
+df[, c("인허가일자", "폐업일자", "휴업시작일자", "인허가취소일자", "최종수정시점")] <- lapply(df[, c("인허가일자", "폐업일자", "휴업시작일자", "인허가취소일자","최종수정시점")], as.Date)
+
+#연도만 나타내는 파생변수 추가
+df[, c("인허가연도", "폐업연도", "휴업시작연도", "인허가취소연도","최종수정연도")] <- lapply(df[, c("인허가일자", "폐업일자", "휴업시작일자", "인허가취소일자","최종수정시점")], year) 
+```
+
+```{r}
+df1 <- df %>% 
+  select("번호", "사업장명", "영업상태구분코드", "상세영업상태명",  
+         "인허가연도", "폐업연도", "휴업시작연도", "인허가취소연도", "최종수정연도",
+         "좌표정보(X)", "좌표정보(Y)")
+```
+
+#### 결측치
+
+##### 변수
+
+-   영업상태구분코드 - 영업상태명
+
+    -   01: 영업/정상
+
+    -   02: 휴업
+
+    -   03: 폐업
+
+    -   04: 취소/말소/만료/정지/중지
+
+##### Cases
+
+-   만약 영업 중인 점포(CODE:01)라면 폐업일자, 휴업일자 NA
+
+    -   확인결과 Okay
+
+```{r}
+#영업 중이면 폐업, 휴업일자가 없어야함.
+df1 %>% 
+  filter(영업상태구분코드=="01") %>%
+  summarise("영업 중이면 모두 폐업일자가 없는가?"=sum(is.na(폐업연도))==nrow(.)) #없음
+
+df1 %>% 
+  filter(영업상태구분코드=="01") %>%
+  summarise("영업 중이면 모두 휴업시작일자가 없는가?"=sum(is.na(휴업시작연도))==nrow(.)) #없음
+```
+
+-   폐업한 점포라면 폐업일자가 있어야함.
+
+    -   만약 폐업점포이지만 폐업일자가 결측치(NA)라면 최종수정시점으로 대체
+
+```{r}
+#폐업 매장의 결측치 확인
+df1 %>%
+  filter(영업상태구분코드=="03", is.na(폐업연도))
+
+df1 <- df1 %>%
+  mutate(폐업연도 = if_else(영업상태구분코드=="03" & !is.na(폐업연도), 폐업연도, if_else(영업상태구분코드=="03" & is.na(폐업연도), 최종수정연도, NA)))
+
+#확인
+df1 %>%
+  filter(영업상태구분코드=="03", is.na(폐업연도))
+```
+
+-   휴업한 점포라면 휴업시작일자가 있어야함.
+
+    -   만약 휴업점포이지만 휴업일자가 결측치(NA)라면 최종수정시점으로 대체
+
+```{r}
+#휴업 매장의 결측치 확인
+df1 %>% 
+  filter(영업상태구분코드=="02", is.na(휴업시작연도))
+
+df1 <- df1 %>%
+  mutate(휴업시작연도 = if_else(영업상태구분코드=="02" & !is.na(휴업시작연도), 휴업시작연도, if_else(영업상태구분코드=="02" & is.na(휴업시작연도), 최종수정연도, NA)))
+
+#확인
+df1 %>% 
+  filter(영업상태구분코드=="02", is.na(휴업시작연도))
+```
+
+-   '취소/말소/만료/정지/중지' 점포
+
+-   상세영업상태에 따라 상이
+
+    | 상세영업상태 | 폐업일자    | 인허가취소일자 |
+    |--------------|-------------|----------------|
+    | 등록취소     | 모든 매장 X | 몇몇 매장 O    |
+    | 신고취소     | 모든 매장 X | 모든 매장 O    |
+    | 지정취소     | 모든 매장 X | 모든 매장 O    |
+    | 직권말소     | 몇몇 매장 X | 모든 매장 X    |
+    | 허가취소     | 모든 매장 X | 몇몇 매장 O    |
+
+-   **취소, 말소, 만료, 정지, 중지는 영업의 여집합으로 분류 -\> 즉, 영업을하지 않는 폐업과 같다고 가정.**
+
+-   '취소/말소/만료/정지/중지' 매장의 경우 인허가취소일자가 있다면 해당 변수를 폐업일자로, 없다면 최종수정시점으로 대체
+
+    -   해당 매장들의 경우 폐업일자가 모두 없는 것을 확인
+
+    ```{r}
+    #취소 매장의 결측치 확인
+    df1 %>% 
+      filter(영업상태구분코드=="04") %>% 
+      summarise(sum(is.na(폐업연도))) #있음
+
+    df1 <- df1 %>%
+      mutate(폐업연도 = if_else(영업상태구분코드=="04" & !is.na(인허가취소연도), 인허가취소연도, if_else(영업상태구분코드=="04" & is.na(인허가취소연도), 최종수정연도, NA)))
+
+    #다시 확인
+    df1 %>% 
+      filter(영업상태구분코드=="04"&is.na(폐업연도)) #없음
+    ```
+
+## 당장 필요한 것은?
+
+### 연도별 헬스장 개수의 추이
+
+-   폐업/휴업/취소한 연도에도 서류상 영업을 했다고 카운팅
+    -   인허가연도와 폐업/휴업/취소 연도가 같을 경우 해당 연도에 영업을 한 것으로 카운팅
+
+```{r}
+# Create a vector of years from 1990 to 2023
+years <- 1990:2023
+
+# Create a data frame to store the results
+Opening_df <- data.frame(year = years, open_stores = rep(0, length(years)))
+
+# Loop through each year
+for (i in 1:length(years)) {
+  
+  # Count the number of open stores in the current year
+  open_stores <- sum(df1$인허가연도 <= years[i] &
+                       (is.na(df1$폐업연도) | df1$폐업연도 >= years[i]) &
+                       (is.na(df1$휴업시작연도) | df1$휴업시작연도 >= years[i]) & 
+                       (is.na(df1$인허가취소연도) | df1$인허가취소연도 >= years[i]))
+  
+  # Calculate the growth rate compared to the previous year
+  growth_rate <- ifelse(i == 1, 0, (open_stores - Opening_df[i-1, "open_stores"])/Opening_df[i-1, "open_stores"] * 100)
+  
+  # Store the results in the data frame
+  Opening_df[i, "open_stores"] <- open_stores
+  Opening_df[i, "growth_rate"] <- growth_rate
+}
+
+# Print the result
+Opening_df
+```
+
+### 연도별 헬스장 인허가 & 폐업 수 추이
+
+```{r}
+# define the years from 1995 to 2023
+years <- seq("1955", "2023", by = 1)
+
+# create an empty data frame to store the results
+result_df <- data.frame(year = years,
+                        인허가연도 = rep(0, length(years)),
+                        폐업연도 = rep(0, length(years)),
+                        휴업시작연도 = rep(0, length(years)),
+                        인허가취소연도 = rep(0, length(years)))
+
+# loop through each year and calculate the frequency of the five variables
+for (i in 1:length(years)) {
+  year <- years[i]
+  result_df[i, "인허가연도"] <- sum(df1$인허가연도 == year)
+  result_df[i, "폐업연도"] <- sum(df1$폐업연도 == year, na.rm = T)
+  result_df[i, "휴업시작연도"] <- sum(df1$휴업시작연도 == year, na.rm = T)
+  result_df[i, "인허가취소연도"] <- sum(df1$인허가취소연도 == year, na.rm = T)
+}
+# print the results
+print(result_df)
+
+result_df %>% 
+  group_by(year) %>%
+  summarise(인허가연도, "폐업/휴업/취소"=폐업연도+휴업시작연도+인허가취소연도)
+
+```

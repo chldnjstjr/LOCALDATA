@@ -1,0 +1,1094 @@
+---
+title: "BRIG"
+author: "WON SEOK CHOI"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: bookdown::bs4_book_dark
+bibliography: [book.bib, packages.bib]
+# url: your book url like https://bookdown.org/yihui/bookdown
+# cover-image: path to the social sharing image like images/cover.jpg
+description: |
+  Wow! Fantastic Baby!.
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+---
+
+# Index
+
+Welcome!
+
+This document outlines the project process for producing a report called **'BRIG'**, which aims to provide valuable insights into market trends and industry analysis through the processing of public data.
+
+In today's data-driven world, the availability of large volumes of public data can be a powerful tool for businesses looking to gain a competitive advantage.
+
+The BRIG report seeks to harness this power by analyzing public data and presenting findings that can inform strategic decision-making for businesses.
+
+The project will involve collecting and processing relevant data, conducting rigorous analysis, and producing a comprehensive report that provides valuable insights into the market and industry trends.
+
+Through this project, we aim to provide useful insights for clients to make objective, data-based decisions and gain a competitive edge in developing marketing strategies.
+
+안녕하세요!
+
+이 문서는 공공 데이터 처리를 통해 시장 동향과 산업 분석에 대한 유용한 인사이트를 제공하는 **'BRIG'** 보고서를 작성하기 위한 프로젝트의 대략적인 과정을 담았습니다.
+
+오늘날 데이터 중심의 사회에서 활용 가능한 대량의 공공데이터는 경쟁에서 우위를 확보하려는 기업들에게 강력한 도구가 될 수 있습니다.
+
+BRIG 보고서는 이러한 점에 착안하여 공공데이터를 분석하고, 비즈니스의 전략적 의사 결정에 도움이 되는 결과를 제시하는 것을 목표로 합니다.
+
+이 프로젝트에서는 관련 데이터 수집 및 처리, 분석, 시장 및 산업 동향에 대한 유용한 인사이트를 제공하는 종합 보고서 작성하였습니다.
+
+본 프로젝트를 통해, 우리는 고객사가 마케팅 전략을 수립함에 있어 객관적인 데이터에 입각한 결정을 내리고 경쟁적 우위를 선점하기 위한 유용한 인사이트를 제공합니다.
+
+```{r eval=FALSE}
+bookdown::serve_book()
+```
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
+
+<!--chapter:end:index.Rmd-->
+
+# 개요
+
+## 제목
+
+BRIG
+
+:   **B**usiness **R**esearch and **I**nsights by **G**allup Korea
+
+## 한 줄 요약
+
+공공데이터를 활용한 트렌드 보고서 작성
+
+## 목적
+
+주요 목표는 공공 데이터를 활용하여 고객에게 시장 통계와 인사이트 제공
+
+## Range
+
+1.  당면한 문제 정의
+2.  데이터
+    -   관련 데이터 수집
+
+    -   데이터 전처리
+
+    -   기술통계, 시각화 및 기타 기술을 통해 데이터를 탐색하여 패턴, 추세 및 관계를 식별
+3.  보고서
+    -   데이터 분석 결과를 토대로 마케팅 인사이트 도출
+
+    -   보고서, 시각화 또는 기타 수단을 통해 이해 관계자에게 조사 결과를 전달
+
+## 절차
+
+데이터 수집→ 전처리 및 분석 → 보고서 작성
+
+## 기간
+
+-   15일 : 2023.04.09. (일) \~ 2023.04.23. (일)
+-   근무 시간 중 (09:00-18:00)에는 가장 후순위
+-   다른 업무가 전혀 없는 경우에만 본 프로젝트 수행하였음.
+-   프로젝트에 필요한 대부분의 시간은 정규 근무 시간 외 또는 주말
+
+## 팀
+
+-   부서: 마케팅 4실
+
+-   참여 인력 및 역할: 1명
+
+    1.  **최원석 연구원**: PM / 데이터 수집 및 전처리 / 인사이트 리포트 작성
+
+<!--chapter:end:01-Overview.Rmd-->
+
+# 배경
+
+**고객사의 0순위 니즈를 충족시켜주자!**
+
+-   신규 제품 및 서비스, 더 넓게는 신사업을 추진하는 과정에서 가장 먼저 필요한 것은 진출하고자 하는 시장의 현황 분석임.
+
+-   한국갤럽의 고객사 중 자체적인 시장조사와 분석에 어려움을 겪어 수주한 조사와 함께 요청하는 경우가 많음.
+
+    -   시장 규모, 잠재고객 규모, 경쟁 업체 수, 특정 제품군의 소비자 수 추정치 등
+
+-   고객사의 시장조사에 대한 니즈가 분명함에도 불구하고 한국갤럽만의 뚜렷한 \`**Solution**\`이 존재하지 않음.
+
+-   **고객사가 겪는 시장조사의 어려움에 대한 기술적인 해결책을 제시할 목적으로 본 프로젝트를 수행하게 됨.**
+
+**고객사는 지방인허가데이터가 왜 필요할까?**
+
+담배소매업을 예시로 설명하면...
+
+-   담배제조사에게 담배소매점은 소비자에게 자사 제품이 전달되는 마지막 채널이기 때문에 중요
+
+-   각 지역별 담배소매업 현황을 파악하여 판매량 예측 또는 판매량에 따른 대응 가능
+
+    -   특정 지역에서 지역에서 담배 판매량이 낮은 경우 소매업 현황 파악하여 원인 찾고 개선 방안 모색
+
+-   담배제조사는 담배제품 유통을 담당하는 담배도소매 업체와 협력하여 제품을 유통시켜야함. 이를 위해 각 지역의 유통 특성을 파악해야함.
+
+-   지역별 담배소매업체의 위치, 수량, 경쟁 업체와 비교, 매출액 등 다른 데이터들과 함께 결합하여 분석하는 것을 통해 효과적인 제품 유통 전략을 수립하고 도소매 업체에게 공유하여 협력관계를 유지하거나 개선할 수 있음.
+
+-   각 지역의 특성과 소비자 선호도 등을 파악하여 마케팅 전략을 수립
+
+-   
+
+<!--chapter:end:02-Backgorund.Rmd-->
+
+# 목표
+
+## 프로젝트의 목표 정의
+
+**연도에 따른 업종별 인허가 수 추이 파악**
+
+1.  부서 내 프로젝트 활용
+
+    -   현재 진행 중인 마케팅 4실의 프로젝트(마이프로틴)에 적용
+
+    -   2010년\~2022년 추이: 전국 체력단련장업 수 / 증감률 / 개업&폐업 추이
+
+2.  기타 프로젝트 활용 가능성 제고
+
+    -   체력단련장업 외 한국갤럽 프로젝트와 관련된 업종의 연도별 추이 파악
+
+    -   타 부서(사회조사 포함)에서도 활용 가능하도록 최대한 많은 업종에 기술 적용
+
+3.  데이터 시각화
+
+    -   고객사 또는 조사 결과 보고서 내 쉽게 첨부할 수 있는 간편한 도구 개발
+
+4.  인사이트
+
+    -   비즈니스 인사이트
+
+## 목표 달성을 위한 계획
+
+1.  서비스 기획 및 설계: **2023년 4월 8일 \~ 2023년 4월 9일 (2일)**
+
+2.  구현: **2023년 4월 10일 \~ 2023년 4월 12일 (3일)**
+
+    -   데이터 로드 및 전처리
+
+        -   체력단련업 외 4개 주요 업종 (일반음식점, 병원, 담배소매업, 대규모점포)
+
+        -   각 업종의 .xlsx 파일 다운로드 (5개)
+
+        -   폐업, 휴업 시기에 대한 결측치 처리
+
+            -   폐업, 휴업 결측치의 경우 해당 시기에 대한 기준 마련
+
+            -   조사 시점 등으로 대체
+
+    -   분석
+
+        -   최종 결과 도출 (R code base)
+
+        -   기능 테스트 및 디버깅
+
+    -   시각화
+
+        -   Flexdashboard 라이브러리 활용한 대시보드 구현 (R)
+
+            -   이미지 파일(.png)로 추출
+
+3.  프로젝트 적용: **2023년 4월 13일 \~ 2023년 4월 14일 (2일)**
+
+    -   마케팅 4실 진행 중인 프로젝트 적용
+
+4.  리포트 작성: **2023년 4월 15일 \~ 2023년 4월 16일 (2일)**
+
+    -   정기간행물 작성
+
+        -   목차 및 분량 구성
+
+        -   주간 / 월간 / 연간
+
+        -   예시 ([바이브컴퍼니 - 썸트렌드](https://some.co.kr/magazine/home))
+
+## 기대효과
+
+1.  한 번의 조사 수행 과정 관점
+
+-   고객사의 부족한 시장 조사 및 분석 보완
+
+-   통계 수집, 그래프 제작 과정의 소요 시간 단축
+
+2.  조직 내부 관점
+
+-   **기술 내재화**
+
+    -   방대한 양의 지방인허가데이터(공공데이터)를 데이터를 다룰 수 있는 기술을 확보함.
+
+-   **파이프라인 구축**
+
+    -   동일한 방식으로 [홈페이지](https://www.localdata.go.kr/)에 공개된 방대한 데이터를 필요에 따라 시각화 가능함.
+
+-   **근로 시간 효율성 제고**
+
+    -   불필요한 업무 시간을 줄임으로써 설문지 설계 등 더 중요한 업무에 더 많은 업무 시간을 사용할 수 있음.
+
+-   **인사이트 제공**
+
+    -   'BRIG' 리포트를 통해 연구 부서 구성원을 중심으로 비즈니스 인사이트 제공
+
+3.  대외적 관점
+
+-   기사 노출 빈도 제고
+
+    -   사회적 이슈 발생 시 특정 통계를 중심으로 작성되는 기사 많음.
+
+        -   [KB금융 "헬스장 1만개...'덤벨 이코노미' 시대 지속 성장 가능"](https://view.asiae.co.kr/article/2020101109401531692)
+
+        -   [충북 "2026년까지 합계출산율 1.4명 달성할 것"](https://www.munhwa.com/news/view.html?no=2023040501071027045001)
+
+    -   주기적으로 리포트를 배포함으로써 기사에 인용되는 빈도를 제고할 수 있음.
+
+-   **오픈소스**
+
+    -   시장 현황에 대한 분석에 대한 니즈는 분야를 막론함.
+
+    -   공공데이터를 적절히 가공한 데이터를 공개함으써 공공에 기여함.
+
+        -   기사, 학술, 주식 분석 리포트 등
+
+<!--chapter:end:03-Objectives.Rmd-->
+
+# 전략 및 방법
+
+1.  수행을 위한 전략
+
+    -   그딴거 없음. 그냥 밀고 간다!
+
+2.  ㅇ
+
+    -   2차 자료(Secondary data): 지방인허가 데이터
+
+    -   문헌조사(Literature review): 인사이트 도출을 위한 논문, 도서 리뷰
+
+3.  프로젝트 실행을 위한 리소스 및 인력 계획
+
+    -   지방인허가데이터 (LOCALDATA)
+
+        -   전국 지방자치단체에 50여 년 동안 축적된 각종 인허가 데이터로, 국민 경제활동과 밀접한 건강·문화·생활·식품 등의 정보를 선별해서 DB화하여 파일형태로 제공
+
+        -   상세 내용([Click](https://www.data.go.kr/tcs/eds/selectCoreDataView.do?coreDataInsttCode=1740000&coreDataSn=1), [Click](https://www.mois.go.kr/frt/bbs/type010/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000008&nttId=46231))
+
+    -   인력 1명
+
+        -   마케팅 4실 최원석 연구원
+
+<!--chapter:end:04-Project_Strategy_and_Methodology.Rmd-->
+
+# 분석
+
+## 준비
+
+### 데이터
+
+1.  체력단련업
+
+-   [홈페이지](https://www.localdata.go.kr/devcenter/dataDown.do?menuNo=20001)에서 직접 다운로드
+
+-   지방인허가데이터의OPEN API는 '변동분 자료'만 호출이 가능하며, 전체 자료는 직접 다운로드해야함([안내](https://www.localdata.go.kr/devcenter/apiGuide.do?menuNo=20002)).
+
+### 라이브러리
+
+```{r}
+library(pacman)
+p_load(readxl, dplyr, lubridate, ggplot2, sf, maps, stringr, plotly)
+```
+
+-   **readxl**: read_xlsx 함수 사용을 위한 패키지
+
+-   **dplyr**: %\>%, select, summarise 함수 사용을 위한 패키지
+
+-   **lubridate**: year 함수 사용을 위한 패키지
+
+-   **ggplot2**: ggplot 함수 사용을 위한 패키지
+
+-   **sf**: st_as_sf, st_transform 함수 사용을 위한 패키지
+
+-   **maps**:
+
+-   plotly: plot_ly 함수 사용을 위한 패키지
+
+### 데이터 불러오기
+
+```{r, include=F}
+df <- read_excel("C:/Users/wschoi/Desktop/TOY/[ITOCHU] 프로틴 파우더 시장 이해를 위한 소비자조사/지방인허가데이터/체력단련업_230409.xlsx")
+str(df)
+names(df)
+```
+
+### 전처리
+
+```{r}
+#날짜 뒤 시간 제거 
+df$최종수정시점 <- as.Date(df$최종수정시점, format = "%Y-%m-%d")
+
+#날짜 형태로 변환 - 연도 파생 변수 추출 목적
+df[, c("인허가일자", "폐업일자", "휴업시작일자", "인허가취소일자", "최종수정시점")] <- lapply(df[, c("인허가일자", "폐업일자", "휴업시작일자", "인허가취소일자","최종수정시점")], as.Date)
+
+#연도만 나타내는 파생변수 추가
+df[, c("인허가연도", "폐업연도", "휴업시작연도", "인허가취소연도","최종수정연도")] <- lapply(df[, c("인허가일자", "폐업일자", "휴업시작일자", "인허가취소일자","최종수정시점")], year) 
+```
+
+```{r}
+df1 <- df %>% 
+  select("번호", "사업장명", "영업상태구분코드", "상세영업상태명",  
+         "인허가연도", "폐업연도", "휴업시작연도", "인허가취소연도", "최종수정연도",
+         "좌표정보(X)", "좌표정보(Y)")
+```
+
+#### 결측치
+
+##### 변수
+
+-   영업상태구분코드 - 영업상태명
+
+    -   01: 영업/정상
+
+    -   02: 휴업
+
+    -   03: 폐업
+
+    -   04: 취소/말소/만료/정지/중지
+
+##### Cases
+
+-   만약 영업 중인 점포(CODE:01)라면 폐업일자, 휴업일자 NA
+
+    -   확인결과 Okay
+
+```{r}
+#영업 중이면 폐업, 휴업일자가 없어야함.
+df1 %>% 
+  filter(영업상태구분코드=="01") %>%
+  summarise("영업 중이면 모두 폐업일자가 없는가?"=sum(is.na(폐업연도))==nrow(.)) #없음
+
+df1 %>% 
+  filter(영업상태구분코드=="01") %>%
+  summarise("영업 중이면 모두 휴업시작일자가 없는가?"=sum(is.na(휴업시작연도))==nrow(.)) #없음
+```
+
+-   폐업한 점포라면 폐업일자가 있어야함.
+
+    -   만약 폐업점포이지만 폐업일자가 결측치(NA)라면 최종수정시점으로 대체
+
+```{r}
+#폐업 매장의 결측치 확인
+df1 %>%
+  filter(영업상태구분코드=="03", is.na(폐업연도))
+
+df1 <- df1 %>%
+  mutate(폐업연도 = if_else(영업상태구분코드=="03" & !is.na(폐업연도), 폐업연도, if_else(영업상태구분코드=="03" & is.na(폐업연도), 최종수정연도, NA)))
+
+#확인
+df1 %>%
+  filter(영업상태구분코드=="03", is.na(폐업연도))
+```
+
+-   휴업한 점포라면 휴업시작일자가 있어야함.
+
+    -   만약 휴업점포이지만 휴업일자가 결측치(NA)라면 최종수정시점으로 대체
+
+```{r}
+#휴업 매장의 결측치 확인
+df1 %>% 
+  filter(영업상태구분코드=="02", is.na(휴업시작연도))
+
+df1 <- df1 %>%
+  mutate(휴업시작연도 = if_else(영업상태구분코드=="02" & !is.na(휴업시작연도), 휴업시작연도, if_else(영업상태구분코드=="02" & is.na(휴업시작연도), 최종수정연도, NA)))
+
+#확인
+df1 %>% 
+  filter(영업상태구분코드=="02", is.na(휴업시작연도))
+```
+
+-   '취소/말소/만료/정지/중지' 점포
+
+-   상세영업상태에 따라 상이
+
+    | 상세영업상태 | 폐업일자    | 인허가취소일자 |
+    |--------------|-------------|----------------|
+    | 등록취소     | 모든 매장 X | 몇몇 매장 O    |
+    | 신고취소     | 모든 매장 X | 모든 매장 O    |
+    | 지정취소     | 모든 매장 X | 모든 매장 O    |
+    | 직권말소     | 몇몇 매장 X | 모든 매장 X    |
+    | 허가취소     | 모든 매장 X | 몇몇 매장 O    |
+
+-   **취소, 말소, 만료, 정지, 중지는 영업의 여집합으로 분류 -\> 즉, 영업을하지 않는 폐업과 같다고 가정.**
+
+-   '취소/말소/만료/정지/중지' 매장의 경우 인허가취소일자가 있다면 해당 변수를 폐업일자로, 없다면 최종수정시점으로 대체
+
+    -   해당 매장들의 경우 폐업일자가 모두 없는 것을 확인
+
+    ```{r}
+    #취소 매장의 결측치 확인
+    df1 %>% 
+      filter(영업상태구분코드=="04") %>% 
+      summarise(sum(is.na(폐업연도))) #있음
+
+    df1 <- df1 %>%
+      mutate(폐업연도 = if_else(영업상태구분코드=="04" & !is.na(인허가취소연도), 인허가취소연도, if_else(영업상태구분코드=="04" & is.na(인허가취소연도), 최종수정연도, NA)))
+
+    #다시 확인
+    df1 %>% 
+      filter(영업상태구분코드=="04"&is.na(폐업연도)) #없음
+    ```
+
+## 당장 필요한 것은?
+
+### 연도별 헬스장 개수의 추이
+
+-   폐업/휴업/취소한 연도에도 서류상 영업을 했다고 카운팅
+    -   인허가연도와 폐업/휴업/취소 연도가 같을 경우 해당 연도에 영업을 한 것으로 카운팅
+
+```{r}
+# Create a vector of years from 1990 to 2023
+years <- 1990:2023
+
+# Create a data frame to store the results
+Opening_df <- data.frame(year = years, open_stores = rep(0, length(years)))
+
+# Loop through each year
+for (i in 1:length(years)) {
+  
+  # Count the number of open stores in the current year
+  open_stores <- sum(df1$인허가연도 <= years[i] &
+                       (is.na(df1$폐업연도) | df1$폐업연도 >= years[i]) &
+                       (is.na(df1$휴업시작연도) | df1$휴업시작연도 >= years[i]) & 
+                       (is.na(df1$인허가취소연도) | df1$인허가취소연도 >= years[i]))
+  
+  # Calculate the growth rate compared to the previous year
+  growth_rate <- ifelse(i == 1, 0, (open_stores - Opening_df[i-1, "open_stores"])/Opening_df[i-1, "open_stores"] * 100)
+  
+  # Store the results in the data frame
+  Opening_df[i, "open_stores"] <- open_stores
+  Opening_df[i, "growth_rate"] <- growth_rate
+}
+
+# Print the result
+Opening_df
+```
+
+### 연도별 헬스장 인허가 & 폐업 수 추이
+
+```{r}
+# define the years from 1995 to 2023
+years <- seq("1955", "2023", by = 1)
+
+# create an empty data frame to store the results
+result_df <- data.frame(year = years,
+                        인허가연도 = rep(0, length(years)),
+                        폐업연도 = rep(0, length(years)),
+                        휴업시작연도 = rep(0, length(years)),
+                        인허가취소연도 = rep(0, length(years)))
+
+# loop through each year and calculate the frequency of the five variables
+for (i in 1:length(years)) {
+  year <- years[i]
+  result_df[i, "인허가연도"] <- sum(df1$인허가연도 == year)
+  result_df[i, "폐업연도"] <- sum(df1$폐업연도 == year, na.rm = T)
+  result_df[i, "휴업시작연도"] <- sum(df1$휴업시작연도 == year, na.rm = T)
+  result_df[i, "인허가취소연도"] <- sum(df1$인허가취소연도 == year, na.rm = T)
+}
+# print the results
+print(result_df)
+
+result_df %>% 
+  group_by(year) %>%
+  summarise(인허가연도, "폐업/휴업/취소"=폐업연도+휴업시작연도+인허가취소연도)
+
+```
+
+<!--chapter:end:05-Get_Ready.Rmd-->
+
+# 시각화
+
+## 지도
+
+### Coordinates
+
+-   지방인허가데이터의 홈페이지 '[데이터 활용가이드](https://www.localdata.go.kr/portal/portalDataGuide.do?menuNo=30002)'에서 좌표정보는 중부원점TM(EPSG:2097)이라고 소개됨.
+
+-   그러나 제공되는 데이터에 해당 좌표정보로 지정하여 위도·경도 변환 시 오류 발생
+
+    -   구글맵, 네이버맵 등에서 나오는 위치와 200m 가량 차이 발생
+
+-   EPSG:2097 → **EPSG:5174**
+
+    -   EPSG:5174(Bessel 1841, TM직각좌표계)로 지정해야 오류 최소화됨.
+
+-   지방인허가데이터에서 사용자들에게 잘못된 정보 제공하는 것으로 추정
+
+-   Issue: XY좌표값의 소수점이 호출하면서 표시되지 않는 문제
+
+    -   기존 문자(character) 타입인 변수를 as.numeric 함수로 변환하면서 정보 유실
+
+    -   엑셀 파일 자체에서 미리 숫자로 변환해놓으면 데이터 로드 시 유실
+
+    -   getOption() 함수를 통해 현재 표시되고 있는 소수점 자리수 확인(7이었음)
+
+    -   해당 옵션을 option()함수를 통해 15자리로 수정하면서 문제 해결
+
+```{r, echo=FALSE}
+getOption("digits")
+options(digits = 15)
+```
+
+```{r}
+coord <- df1[,c(1,10,11)] #1열:번호 / 10열:X좌표값 / 11열: Y좌표값 
+coord <- na.omit(coord) #좌표값이 없는 경우 삭제
+
+point_localdb <- st_as_sf(coord, coords = c('좌표정보(X)','좌표정보(Y)'), crs = '+proj=tmerc +lat_0=38 +lon_0=127.0028902777778 +k=1 +x_0=200000 +y_0=500000 +ellps=bessel +units=m +no_defs +towgs84=-115.80,474.99,674.11,1.16,-2.31,-1.63,6.43')
+
+#변경 후 좌표값의 좌표계 형식 지정(4326 = WGS84)
+point_localdb_tf <- st_transform(point_localdb, crs = 4326)
+
+str(point_localdb_tf)
+
+df2 <- left_join(df1, point_localdb_tf, by="번호") 
+
+# 좌표 추출 및 변수 생성
+df2$latitude <- st_coordinates(df2$geometry)[, "Y"]
+df2$longitude <- st_coordinates(df2$geometry)[, "X"]
+```
+
+```{r, eval=FALSE}
+#아래는 EPSG:2097로 지정한 경우
+#point_localdb <- st_as_sf(coord, coords = c('좌표정보(X)','좌표정보(Y)'), crs = '+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=500000 +ellps=bessel +units=m +no_defs +towgs84=-115.80,474.99,674.11,1.16,-2.31,-1.63,6.43')
+```
+
+-   최종 파일 추출
+
+```{r}
+df3 <- subset(df2, select = -geometry)
+write.csv(df3,"C:/Users/wschoi/Desktop/TOY/[ITOCHU] 프로틴 파우더 시장 이해를 위한 소비자조사/지방인허가데이터/헬스장_위도경도추가.csv", fileEncoding = "cp949")
+```
+
+-   Issue: geometry type의 벡터 추출
+
+    -   우선 텍스트(.csv) 파일로 추출하는 것으로 모면 ㅎㅎ
+
+-   Issue: 깨짐
+
+    -   df_done 파일 그대로 추출하면 깨짐. encoding 필요
+
+    -   fileEncoding = "UTF-8" 옵션 추가
+
+### Mapping
+
+```{r, eval=F}
+#install.packages("leaflet")
+#install.packages("geojsonio")
+library(leaflet)
+library(geojsonio)
+
+df4 <- df2 %>%
+  filter(df2$영업상태구분코드=="01") %>% 
+  select(longitude, latitude, 사업장명) %>%
+  na.omit()
+
+m <- leaflet(df4) %>%
+  addProviderTiles("OpenStreetMap.Mapnik") %>% # add map tiles
+  addMarkers(lng = ~longitude, lat = ~latitude, popup = ~사업장명) # add markers with popups
+
+# display the map
+m
+```
+
+## 연도별 헬스장 인허가 & 페업 수 추이
+
+```{r}
+result_df %>% 
+  group_by(year) %>%
+  summarise(인허가연도, "폐업/휴업/취소"=폐업연도+휴업시작연도+인허가취소연도) %>%
+  ggplot(aes(x = year)) +
+  geom_line(aes(y = 인허가연도, color = "인허가")) +
+  geom_line(aes(y = `폐업/휴업/취소`, color = "폐업/휴업/취소")) +
+  labs(x = "연도", y = "개수", color = "") +
+  scale_color_manual(values = c("인허가" = "blue", "폐업/휴업/취소" = "red")) +
+  theme_bw()
+```
+
+<!--chapter:end:06-Visualization.Rmd-->
+
+# 응용
+
+## 데이터
+
+-   담배소매업
+
+## Research
+
+국내에서 영업 중인 담배제조사
+
+### 준비
+
+담배 소매점의 트렌드와 전국 현황을 살펴본다
+
+#### 데이터 불러오기
+
+-   제공되는 엑셀 파일은 3개의 시트로 나뉘어 있음.
+-   각 시트를 호출하여 1개 데이터 프레임으로 합치는 작업 ▼
+
+```{r, echo=FALSE, warning=FALSE}
+library(pacman)
+p_load(readxl, dplyr, rgdal,sp, plotly, ggplot2, maps, writexl)
+
+# Specify the file path and sheet names
+file_path <- "C:/Users/wschoi/Desktop/TOY/[ITOCHU] 프로틴 파우더 시장 이해를 위한 소비자조사/지방인허가데이터/LOCALDATA_ALL/fulldata_11_43_02_P_담배소매업.xlsx"
+
+sheet_names <- c("담배소매업_1", "담배소매업_2", "담배소매업_3")
+
+# Read each sheet and create a data frame
+sheet_data <- lapply(sheet_names, function(sheet) {
+  read_excel(file_path, sheet = sheet)
+})
+
+# Combine the data frames into one
+ciga_df <- do.call(rbind, sheet_data)
+rm(sheet_data)
+```
+
+#### 전처리
+
+```{r}
+#Remove time from the date
+ciga_df$최종수정시점 <- as.Date(ciga_df$최종수정시점, format = "%Y-%m-%d")
+
+ciga_df <- ciga_df %>% 
+  mutate(인허가취소일자 = ifelse(인허가취소일자 == "2206-06-01", "2018-08-31", 인허가취소일자))
+
+ciga_df <- ciga_df %>% 
+  mutate(휴업시작일자 = ifelse(휴업시작일자 == "1111-11-11", "2008-03-04", 휴업시작일자))
+
+ciga_df <- ciga_df %>% 
+  mutate(휴업종료일자 = ifelse(휴업종료일자 == "1111-11-11", "2008-03-04", 휴업종료일자))
+
+#Convert to date format
+ciga_df[, c("인허가일자", "폐업일자", "휴업시작일자", "인허가취소일자", "최종수정시점")] <- lapply(ciga_df[, c("인허가일자", "폐업일자", "휴업시작일자", "인허가취소일자","최종수정시점")], as.Date)
+
+```
+
+-   유효성 점검
+
+    -   인허가일자
+
+        -   대한민국 정부 수립일(1948년 8월 15일) 이전은 모두 삭제
+
+    -   사업장명
+
+        -   삭제 케이스
+
+    -   영업 중인 매장은 폐업일자가 없음 -\> O
+
+    -   영업 중인 매장 중 일부 휴업일자가 있음 -\> X
+
+```{r}
+#인허가일자 결측치 확인
+sum(is.na(ciga_df$인허가연도)) #2023년 3월 31일 기준 1,131개 결측치 존재
+
+#인허가일자 결측치 처리
+ciga_df <- ciga_df[!is.na(ciga_df$인허가일자), ] #인허가일자가 있는 케이스만 골라내기
+
+#인허가일자 범위 
+summary(ciga_df$인허가일자)
+```
+
+-   대한민국 정부 수립일 이전은 모두 삭제
+    -   대한민국 정부 수립일: 1948년 8월 15일 ([참고](https://www.much.go.kr/L/UwSQDs26fz.do))
+    -   당시 정부와 통계 당국은 지금과 매우 다른 조건과 방법으로 자료를 수집하고 분석했을 가능성 있음.
+    -   따라서 현재 통계 자료 대비 정부 수립일 이전 통계 자료에 대한 신뢰성 문제 존재함.
+    -   이전 통계 자료는 그 시대의 특성을 반영할 수는 있지만 현재 통계와 크게 다를 수 있기 때문에 인허가 일자가 정부 수립일 이전인 경우 모두 삭제함.
+        -   예시) 인허가일자가 1911년 1월 1일 -\> 당시 슈퍼가 지금의 슈퍼가 아닐 수 있음.
+    -   또한 인허가 일자가 1900년인 경우 일자가 상이하지 않고 모두 1900년 1월 1일인 것으로 보았을 때 오기 또는 타당하지 않은 통계라고 보았음.
+
+```{r}
+#인허가일자가 1950년대 미만인 케이스 선택
+ciga_df %>%
+  filter(인허가일자 < as.Date("1950-08-15"))
+
+#대한민국 정부 수립일 이전 삭제
+ciga_df <- ciga_df[!ifelse(ciga_df$인허가일자 < "1948-08-15", TRUE, FALSE), ]
+```
+
+-   사업장명
+
+    -   NA 또는 "-", "\--"
+
+    -   "상호없음", "상호 없음", "없음" 등 -\> "없"이라는 단어 들어간 경우 삭제
+
+        -   "울타리없는만두", "번지없는주막"이라는 매장 -\> "없"이 들어가면서 6글자 미만인 경우 삭제
+
+        -   "없"이 들어간 케이스 모두 육안으로 확인하였음.
+
+    -   자신의 이름 석자
+
+    -   기타 등등
+
+```{r}
+#결측치 확인
+sum(is.na(ciga_df$사업장명)) #없음
+
+#사업장명이 1글자인 경우 삭제
+ciga_df <- ciga_df %>% filter(!str_length(사업장명) == 1)
+
+#사업장명이 2글자인 경우, 그 빈도가 3 이상인 경우 삭제
+#library(stringr)
+freq <- ciga_df[str_length(ciga_df$사업장명) == 2, "사업장명"] %>% table() #문자열 길이가 2인 케이스
+to_remove <- names(freq[freq > 2])
+ciga_df <- ciga_df[!(str_length(ciga_df$사업장명) == 2 & ciga_df$사업장명 %in% to_remove), ]
+
+#"없"이 들어간 경우, 6글자 미만인 경우 삭제 
+ciga_df <- ciga_df[!(grepl("없", ciga_df$사업장명) & str_length(ciga_df$사업장명) < 7),]
+
+#"상호 없음" 또는 "상호명" 또는 "없음" 이라는 단어 들어간 경우 삭제
+ciga_df <- ciga_df[!grepl("상호 없음|상호명|없음", ciga_df$사업장명), ]
+
+#'없' 케이스 확인
+ciga_df[grep("없", ciga_df$사업장명), ]
+```
+
+-   자기이름 석자 케이스
+
+    -   가장 빈도가 높은 성씨로 시작하는 3글자 조회 → 직접 확인 후 삭제
+
+        -   2015년 통계청 '인구총조사'에 따르면 순위는 다음과 같음
+
+            | 순위 | 성씨 |    인구    |
+            |:----:|:----:|:----------:|
+            |  1   |  김  | 10,689,959 |
+            |  2   |  이  | 7,306,828  |
+            |  3   |  박  | 4,192,074  |
+            |  4   |  최  | 2,333,927  |
+            |  5   |  정  | 2,151,879  |
+            |  6   |  강  | 1,176,847  |
+            |  7   |  조  | 1,055,567  |
+            |  8   |  윤  | 1,020,547  |
+            |  9   |  장  |  992,721   |
+            |  10  |  임  |  823,921   |
+
+```{r}
+#슈퍼 또는 수퍼 또는 박가네 또는 마트가 포함되지 않으면서
+#성씨 빈도 Top10으로 시작하는 3글자의 사업장명은 제외
+ciga_df[str_length(ciga_df$사업장명) == 3 & 
+          !grepl("(슈퍼|수퍼|박가네|마트)", ciga_df$사업장명) &
+          grepl("^(김|이|박|최|정|강|조|윤|장|임)", ciga_df$사업장명), '사업장명']
+
+#조건문 반대로 적용하여 ciga_df 다시 정의
+ciga_df <- ciga_df[!(str_length(ciga_df$사업장명) == 3 &
+                     !grepl("(슈퍼|수퍼|박가네|마트)", ciga_df$사업장명) &
+                     grepl("^(김|이|박|최|정|강|조|윤|장|임)", ciga_df$사업장명)),]
+```
+
+-   주소 테이블 Join
+    -   '시도'와 '시군구' 테이블을 조인하여 지역 정보 추가
+
+```{r}
+region_df <- read_xlsx("C:/Users/wschoi/Desktop/TOY/[ITOCHU] 프로틴 파우더 시장 이해를 위한 소비자조사/지방인허가데이터/지역 테이블.xlsx")
+
+ciga_df <- left_join(ciga_df, region_df[c("개방자치단체코드", "시도명", "시군구명")], by='개방자치단체코드')
+
+head(ciga_df)
+
+#결측치 확인
+sum(is.na(ciga_df$시도명))
+sum(is.na(ciga_df$시군구명))
+```
+
+-   날짜 변수 전처리
+    -   영업 중 (영업상태구분코드 "01") 매장 중 휴업시작일자가 있는 경우
+        -   일정 기간 휴업 후 현재는 정상영업하고 있는 매장임. 따라서 다른 처리 X
+
+```{r}
+#영업 중이면 폐업, 휴업일자가 없어야함.
+ciga_df %>% 
+  filter(영업상태구분코드=="01") %>%
+  summarise("영업 중이면 모두 폐업일자가 없는가?"=sum(is.na(폐업일자))==nrow(.)) #없음
+
+ciga_df %>% 
+  filter(영업상태구분코드=="01") %>%
+  summarise("영업 중이면 모두 휴업종료일자가 없는가?"=sum(is.na(휴업종료일자))==nrow(.)) #없음
+
+
+#전처리 결과 확인
+ciga_df %>%
+  filter(ciga_df$영업상태구분코드=="02" & !is.na(ciga_df$휴업시작일자)) #굳
+
+```
+
+-   폐업매장 결측치
+
+    -   폐업매장 (영업상태구분코드 "03")이지만 폐업일자가 없는 경우
+
+        -   폐업일자를 최종수정시점으로 대체
+
+        -   폐업매장이지만 폐업일자 있는 경우 → 정상이기 때문에 다른 처리 X
+
+```{r}
+#폐업 매장의 결측치 확인
+ciga_df %>%
+  filter(영업상태구분코드=="03", is.na(폐업일자))
+
+#폐업매장이지만 폐업일자가 없는 케이스에 대해 폐업일자를 최종수정일자로 대체
+ciga_df <- ciga_df %>%
+  mutate(폐업일자 = if_else(영업상태구분코드 == "03" & !is.na(폐업일자), 폐업일자,
+                        if_else(영업상태구분코드 == "03" & is.na(폐업일자), 최종수정시점, 폐업일자)))
+
+#확인
+ciga_df %>%
+  filter(영업상태구분코드=="03", !is.na(폐업일자)) #388,681
+```
+
+-   휴업 매장 결측치 확인
+
+    -   휴업 매장(영업상태구분코드 "02")이지만 휴업시작일자가 없는 경우
+
+        -   최종수정시점으로 대체
+
+    -   휴업 매장이지만 휴업시작일자가 없고 휴업종료일자는 있는 경우 확인
+
+```{r}
+#휴업 매장의 결측치 확인
+ciga_df %>% 
+  filter(영업상태구분코드=="02", is.na(휴업시작일자))
+
+#휴업 매장이지만 휴업시작일자가 없는 경우 최종수정일자로 대체
+ciga_df <- ciga_df %>% 
+  mutate(휴업시작일자=if_else(영업상태구분코드=="02" & !is.na(휴업시작일자), 휴업시작일자, if_else(영업상태구분코드=="02"& is.na(휴업시작일자), 최종수정시점, 휴업시작일자)))
+
+#확인
+ciga_df %>% 
+  filter(영업상태구분코드=="02", is.na(휴업시작일자))
+```
+
+-   인허가 취소 매장 결측치 확인
+
+    -   
+
+```{r}
+#취소 매장의 결측치 확인
+ciga_df %>% 
+  filter(영업상태구분코드=="04") %>% 
+  summarise(sum(is.na(인허가취소일자))) #있음
+#영업상태구분코드가 04인 매장은 모두 폐업일자 없음.
+
+ciga_df <- ciga_df %>%
+  mutate(인허가취소일자=if_else(영업상태구분코드 == "04" & !is.na(인허가취소일자),인허가취소일자,
+        if_else(영업상태구분코드 == "04" & is.na(인허가취소일자),최종수정시점,인허가취소일자)))
+
+#다시 확인
+ciga_df %>% 
+  filter(영업상태구분코드=="04"&is.na(인허가취소일자)) #없음
+```
+
+-   연도변수 추가
+
+```{r}
+ciga_df <- ciga_df %>%
+  mutate(인허가연도 = year(as.Date(인허가일자, origin = "1970-01-01")),
+         폐업연도 = year(as.Date(폐업일자, origin = "1970-01-01")),
+         휴업시작연도 = year(as.Date(휴업시작일자, origin = "1970-01-01")),
+         인허가취소연도 = year(as.Date(인허가취소일자, origin = "1970-01-01")),
+         최종수정연도 = year(as.Date(최종수정시점, origin = "1970-01-01")))
+```
+
+### 분석
+
+#### 연도별 담배소매점 수 추이
+
+```{r, Trends in the number of tobacco retail stores by year}
+# Create a vector of years from 1990 to 2023
+years <- 1990:2023
+
+# Create a data frame to store the results
+Opening_ciga_df <- data.frame(year = years, open_stores = rep(0, length(years)))
+
+# Loop through each year
+for (i in 1:length(years)) {
+  
+  # Count the number of open stores in the current year
+  open_stores <- sum(ciga_df$인허가연도 <= years[i] &
+                       (is.na(ciga_df$폐업연도) | ciga_df$폐업연도 >= years[i]) &
+                       (is.na(ciga_df$휴업시작연도) | ciga_df$휴업시작연도 >= years[i]) & 
+                       (is.na(ciga_df$인허가취소연도) | ciga_df$인허가취소연도 >= years[i]))
+  
+  # Calculate the growth rate compared to the previous year
+  growth_rate <- ifelse(i == 1, 0, (open_stores - Opening_ciga_df[i-1, "open_stores"])/Opening_ciga_df[i-1, "open_stores"] * 100)
+  
+  # Store the results in the data frame
+  Opening_ciga_df[i, "open_stores"] <- open_stores
+  Opening_ciga_df[i, "growth_rate"] <- round(growth_rate,1)
+}
+
+# Print the result
+Opening_ciga_df
+
+fig <- plot_ly(Opening_ciga_df, x = ~year, y = ~open_stores, type = 'scatter', mode = 'lines') %>%
+  layout(title = 'Trends in the number of tobacco retail stores by year',
+         xaxis = list(title = 'Year'),
+         yaxis = list(title = 'Number of Stores'), 
+         plot_bgcolor = "black", paper_bgcolor = "black", font = list(color = "white"))
+
+fig 
+```
+
+#### 연도별 담배소매점 인허가 및 폐업/취소/휴업 수 추이
+
+```{r}
+# define the years from 1995 to 2023
+years <- seq("1952", "2023", by = 1)
+
+# create an empty data frame to store the results
+result_ciga_df <- data.frame(year = years,
+                        인허가연도 = rep(0, length(years)),
+                        폐업연도 = rep(0, length(years)),
+                        휴업시작연도 = rep(0, length(years)),
+                        인허가취소연도 = rep(0, length(years)))
+
+# loop through each year and calculate the frequency of the five variables
+for (i in 1:length(years)) {
+  year <- years[i]
+  result_ciga_df[i, "인허가"] <- sum(ciga_df$인허가연도 == year)
+  result_ciga_df[i, "폐업"] <- sum(ciga_df$폐업연도 == year, na.rm = T)
+  result_ciga_df[i, "휴업시작"] <- sum(ciga_df$휴업시작연도 == year, na.rm = T)
+  result_ciga_df[i, "인허가취소"] <- sum(ciga_df$인허가취소연도 == year, na.rm = T)
+}
+# print the results
+print(result_ciga_df)
+
+result_ciga_df %>% 
+  group_by(year) %>%
+  summarise(인허가, "폐업/휴업/취소"=폐업+휴업시작+인허가취소)
+```
+
+-   시각화
+
+```{r}
+#library(plotly)
+
+result_ciga_df_2 <- result_ciga_df %>% 
+  group_by(year) %>%
+  summarise(인허가, "폐업_휴업_취소"=폐업+휴업시작+인허가취소)
+
+plot_ly(data = result_ciga_df_2, x = ~year) %>%
+  add_lines(y = ~인허가, name = "인허가", line = list(color = "#1f77b4")) %>%
+  add_lines(y = ~`폐업_휴업_취소`, name = "폐업/휴업/취소", line = list(color = "#d62728")) %>%
+  layout(title = "연도별 인허가 및 폐업/휴업/취소 추이", xaxis = list(title = "연도"), yaxis = list(title = "누적 수"), plot_bgcolor = "black", paper_bgcolor = "black", font = list(color = "white"))
+```
+
+#### 지역별 담배소매점 수
+
+```{r}
+ciga_df %>%
+  filter(영업상태구분코드=="01") %>% 
+  group_by(시도명) %>%
+  summarise("개수"=n()) %>%
+  arrange(desc(개수))
+```
+
+-   지도 시각화
+
+    -   (주)지오서비스의 블로그(click)에서 제공하는 대한민국 최신 행정구역(SHP) 활용
+
+    -   rnaturalearth, rworldmap 등 지도 시각화 패키지 있으나 시군구 행정구역까지는 지원하지 않음
+
+    -   shp 파일 불러올 때 'euc-kr' 설정!
+
+```{r, warning=FALSE}
+#library(rgdal)
+#library(sp)
+
+map = readOGR("C:/Users/wschoi/Desktop/TOY/[ITOCHU] 프로틴 파우더 시장 이해를 위한 소비자조사/지방인허가데이터/대한민국 행정구역_시도(2023.02)/ctp_rvn.shp", encoding = 'euc-kr')
+
+map_2 = readOGR("C:/Users/wschoi/Desktop/TOY/[ITOCHU] 프로틴 파우더 시장 이해를 위한 소비자조사/지방인허가데이터/대한민국 행정구역_시군구(2023.02)/sig.shp", encoding = 'euc-kr')
+class(map)
+slotNames(map) #5개의 슬롯
+
+df_map_info = map@data
+head(df_map_info, 10) #확인
+```
+
+```{r}
+#library(ggplot2)
+#install.packages("maps")
+#library(maps)
+
+# 지도 데이터 불러오기
+df_map = fortify(map)
+head(df_map)
+
+df_map_info[, "id"] = (1:nrow(df_map_info)) - 1
+df_map_info
+
+# 데이터 전처리
+ciga_region_df <- as.data.frame(ciga_df %>%
+  filter(영업상태구분코드=="01") %>% 
+  group_by(region=시도명) %>%
+  summarise("개수"=n()))
+
+df_map$id <- as.numeric(df_map$id)
+df_map <- left_join(df_map, df_map_info, by = 'id')
+
+names(df_map)[names(df_map) == "CTP_KOR_NM"] <- "region"
+
+df_map_select <- select(df_map, region, long, lat, group, region)
+
+left_join(ciga_region_df, df_map_select,by = "region") %>%
+  ggplot() + geom_polygon(aes(x=long, y=lat, group=group, fill = 개수)) +
+  scale_fill_gradient(low = "#FDE0DD", high = "#B30000") +
+  ggtitle("대한민국 시도별 담배소매업 개수") -> p
+
+ggplotly(p)
+```
+
+#### 시군구별 담배소매점 수
+
+```{r}
+ciga_df %>%
+  filter(영업상태구분코드=="01" & is.na(폐업일자)&is.na(인허가취소일자)) %>% 
+  group_by(시도명, 시군구명) %>%
+  summarise("개수"=n()) %>%
+  arrange(desc(개수))
+```
+
+```{r}
+#서울 각 구별 담배소매점 개수
+ciga_df %>%
+  filter(영업상태구분코드=="01" & 시도명=="서울특별시") %>% 
+  group_by(시도명, 시군구명) %>%
+  summarise("개수"=n()) %>%
+  arrange(desc(개수))
+
+#경기도 각 시별 담배소매점 개수
+ciga_df %>%
+  filter(영업상태구분코드=="01" & 시도명=="경기도") %>% 
+  group_by(시도명, 시군구명) %>%
+  summarise("개수"=n()) %>%
+  arrange(desc(개수))
+```
+
+#### 폐업장 평균 영업 기간
+
+-   폐업장 평균 영업 기간
+    -   폐업/취소/휴업 등 비영업인 경우 케이스의 평균
+
+```{r}
+ciga_df %>%
+  filter(!is.na(폐업일자), !is.na(인허가일자), is.na(인허가취소일자)) %>%
+  mutate(폐업일자 = ifelse(is.na(폐업일자), Sys.Date(), 폐업일자)) %>%
+  mutate(평균업지속기간_연도 = as.numeric(difftime(as.Date(폐업일자, origin = "1970-01-01"), as.Date(인허가일자), units = "days"))/365) %>%
+  group_by(폐업연도) %>%
+  summarise(평균업기간 = mean(평균업지속기간_연도, na.rm = TRUE))
+```
+
+```{r}
+
+```
+
+<!--chapter:end:07-Implication.Rmd-->
+

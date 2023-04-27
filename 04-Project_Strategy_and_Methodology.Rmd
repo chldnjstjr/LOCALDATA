@@ -1,0 +1,23 @@
+# 전략 및 방법
+
+1.  수행을 위한 전략
+
+    -   그딴거 없음. 그냥 밀고 간다!
+
+2.  ㅇ
+
+    -   2차 자료(Secondary data): 지방인허가 데이터
+
+    -   문헌조사(Literature review): 인사이트 도출을 위한 논문, 도서 리뷰
+
+3.  프로젝트 실행을 위한 리소스 및 인력 계획
+
+    -   지방인허가데이터 (LOCALDATA)
+
+        -   전국 지방자치단체에 50여 년 동안 축적된 각종 인허가 데이터로, 국민 경제활동과 밀접한 건강·문화·생활·식품 등의 정보를 선별해서 DB화하여 파일형태로 제공
+
+        -   상세 내용([Click](https://www.data.go.kr/tcs/eds/selectCoreDataView.do?coreDataInsttCode=1740000&coreDataSn=1), [Click](https://www.mois.go.kr/frt/bbs/type010/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000008&nttId=46231))
+
+    -   인력 1명
+
+        -   마케팅 4실 최원석 연구원
