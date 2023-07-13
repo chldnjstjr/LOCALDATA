@@ -21,6 +21,8 @@ p_load(readxl, DT, dplyr, lubridate, ggplot2, sf, maps, stringr, plotly)
 
 -   **readxl**: read_xlsx 함수 사용을 위한 패키지
 
+-   **DT**:
+
 -   **dplyr**: %\>%, select, summarise 함수 사용을 위한 패키지
 
 -   **lubridate**: year 함수 사용을 위한 패키지

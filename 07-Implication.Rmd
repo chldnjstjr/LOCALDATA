@@ -346,7 +346,6 @@ result_ciga_df %>%
 
 ```{r}
 #library(plotly)
-
 result_ciga_df_2 <- result_ciga_df %>% 
   group_by(year) %>%
   summarise(인허가, "폐업_휴업_취소"=폐업+휴업시작+인허가취소)
@@ -425,18 +424,14 @@ ggplotly(p)
 ### 시군구별 담배소매점 수
 
 ```{r}
-ciga_df %>%
+ciga_region_df <- ciga_df %>%
   filter(영업상태구분코드=="01" & is.na(폐업일자)&is.na(인허가취소일자)) %>% 
   group_by(시도명, 시군구명) %>%
   summarise("개수"=n()) %>%
   arrange(desc(개수))
 
-datatable(ciga_df %>%
-  filter(영업상태구분코드=="01" & is.na(폐업일자)&is.na(인허가취소일자)) %>% 
-  group_by(시도명, 시군구명) %>%
-  summarise("개수"=n()) %>%
-  arrange(desc(개수)), 
-  caption = "연도별 헬스장 개수", 
+datatable(ciga_region_df, 
+  caption = "지역별 담배소매점 개수", 
           filter = "top", 
           extensions = 'Buttons', 
           options = list(dom = "Blfrtip", buttons = c("copy", "csv", "excel", "pdf")))

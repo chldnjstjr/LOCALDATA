@@ -4,7 +4,7 @@ BRIG
 
 :   **B**usiness **R**esearch and **I**nsights by **G**allup Korea
 
-## 두 줄 요약
+## 요약
 
 -   분석을 위한 공공데이터 전처리 방법 공유
 
