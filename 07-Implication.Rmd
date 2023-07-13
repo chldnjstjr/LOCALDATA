@@ -3,7 +3,6 @@
 ## 데이터
 
 -   담배소매업
--   국내에서 영업 중인 담배제조사
 
 ## 목표
 
@@ -247,8 +246,6 @@ ciga_df %>%
 
 -   인허가 취소 매장 결측치 확인
 
-    -   
-
 ```{r}
 #취소 매장의 결측치 확인
 ciga_df %>% 
@@ -433,6 +430,18 @@ ciga_df %>%
   group_by(시도명, 시군구명) %>%
   summarise("개수"=n()) %>%
   arrange(desc(개수))
+
+datatable(ciga_df %>%
+  filter(영업상태구분코드=="01" & is.na(폐업일자)&is.na(인허가취소일자)) %>% 
+  group_by(시도명, 시군구명) %>%
+  summarise("개수"=n()) %>%
+  arrange(desc(개수)), 
+  caption = "연도별 헬스장 개수", 
+          filter = "top", 
+          extensions = 'Buttons', 
+          options = list(dom = "Blfrtip", buttons = c("copy", "csv", "excel", "pdf")))
+
+
 ```
 
 ```{r}

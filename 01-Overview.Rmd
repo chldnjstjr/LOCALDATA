@@ -1,7 +1,5 @@
 # 개요
 
-## 제목 (가칭)
-
 BRIG
 
 :   **B**usiness **R**esearch and **I**nsights by **G**allup Korea

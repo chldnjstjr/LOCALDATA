@@ -6,6 +6,8 @@
 
 1.  체력단련업
 
+-   연도별 헬스장의 수, 증감에 대한 데이터를 업데이트 해달라는 고객사의 요청을 우선 수행
+
 -   [홈페이지](https://www.localdata.go.kr/devcenter/dataDown.do?menuNo=20001)에서 직접 다운로드
 
 -   지방인허가데이터의OPEN API는 '변동분 자료'만 호출이 가능하며, 전체 자료는 직접 다운로드해야함([안내](https://www.localdata.go.kr/devcenter/apiGuide.do?menuNo=20002)).
@@ -14,7 +16,7 @@
 
 ```{r}
 library(pacman)
-p_load(readxl, dplyr, lubridate, ggplot2, sf, maps, stringr, plotly)
+p_load(readxl, DT, dplyr, lubridate, ggplot2, sf, maps, stringr, plotly)
 ```
 
 -   **readxl**: read_xlsx 함수 사용을 위한 패키지
@@ -188,7 +190,9 @@ for (i in 1:length(years)) {
 }
 
 # Print the result
-Opening_df
+datatable(Opening_df, caption = "연도별 헬스장 개수", filter = "top", 
+          extensions = 'Buttons', 
+          options = list(dom = "Blfrtip", buttons = c("copy", "csv", "excel", "pdf")))
 ```
 
 ### 연도별 헬스장 인허가 & 폐업 수 추이
@@ -214,9 +218,15 @@ for (i in 1:length(years)) {
 }
 
 # print the results
-print(result_df)
-
-result_df %>% 
+Open_Close_year <- result_df %>% 
   group_by(year) %>%
-  summarise(인허가연도, "폐업/휴업/취소"=폐업연도+휴업시작연도+인허가취소연도)
+  summarise("창업 수"=인허가연도, "폐업/휴업/취소"=폐업연도+휴업시작연도+인허가취소연도)
+
+# Print the result
+datatable(Open_Close_year, caption = "연도별 헬스장 창폐업 수", filter = "top",
+          extensions = 'Buttons',
+          options = list(dom = "Blfrtip", buttons = c("copy", "csv", "excel", "pdf")))
 ```
+
+\
+\

@@ -6,9 +6,8 @@
 
 -   지방인허가데이터의 좌표는 위도, 경도 좌표가 아님. 따라서 범용성을 위해 위경도 좌표로 변환 필요.
 
-```{=html}
 <!-- -->
-```
+
 -   지방인허가데이터의 홈페이지 '[데이터 활용가이드](https://www.localdata.go.kr/portal/portalDataGuide.do?menuNo=30002)'에서 좌표정보는 중부원점TM(EPSG:2097)이라고 소개됨.
 
 -   그러나 제공되는 데이터에 해당 좌표정보로 지정하여 위도·경도 변환 시 오류 발생
@@ -74,29 +73,6 @@ write.csv(df3,"C:/Users/wschoi/Desktop/TOY/[ITOCHU] 프로틴 파우더 시장 �
     -   df_done 파일 그대로 추출하면 깨짐. encoding 필요
 
     -   fileEncoding = "cp949" 옵션 추가
-
-### Mapping
-
--   1만개가 넘어가는 장소를 맵에 업로드 하면 컴퓨터가 많이 아파함.
-
-```{r, eval=F}
-#install.packages("leaflet")
-#install.packages("geojsonio")
-library(leaflet)
-library(geojsonio)
-
-df4 <- df2 %>%
-  filter(df2$영업상태구분코드=="01") %>% 
-  select(longitude, latitude, 사업장명) %>%
-  na.omit()
-
-m <- leaflet(df4) %>%
-  addProviderTiles("OpenStreetMap.Mapnik") %>% # add map tiles
-  addMarkers(lng = ~longitude, lat = ~latitude, popup = ~사업장명) # add markers with popups
-
-# display the map
-m
-```
 
 ## 연도별 헬스장 인허가 & 페업 수 추이
 
